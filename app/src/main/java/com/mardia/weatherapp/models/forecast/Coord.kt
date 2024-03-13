@@ -1,14 +1,38 @@
 package com.mardia.weatherapp.models.forecast
 
 
-import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 data class Coord(
     @SerializedName("lat")
     @Expose
-    val lat: Double?,
+    var lat: Double? = null,
+
     @SerializedName("lon")
     @Expose
-    val lon: Double?
-)
+    var lon: Double? = null
+) {
+    // Getter methods
+    fun getLat(): Double? {
+        return lat
+    }
+
+    fun getLon(): Double? {
+        return lon
+    }
+
+    // Setter methods
+    fun setLat(lat: Double?) {
+        this.lat = lat
+    }
+
+    fun setLon(lon: Double?) {
+        this.lon = lon
+    }
+
+    // toString method
+    override fun toString(): String {
+        return "Coord(lat=$lat, lon=$lon)"
+    }
+}

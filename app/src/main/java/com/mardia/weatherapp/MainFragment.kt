@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mardia.weatherapp.adapter.ForecastAdapter
 import com.mardia.weatherapp.databinding.FragmentMainBinding
 import com.mardia.weatherapp.models.currentweather.CurrentWeatherRootModel
+import com.mardia.weatherapp.models.forecast.ForecastRootModel
 import com.mardia.weatherapp.utils.Constants
 import com.mardia.weatherapp.utils.DeviceLocation
 import com.mardia.weatherapp.utils.LocationPermissions
@@ -98,8 +99,8 @@ class MainFragment : Fragment() {
 
         // set forecast data into RecyclerView
         mainFragmentViewModel?.getForecastLiveData()?.observe(viewLifecycleOwner,
-            Observer<Any?> { forecastRootModel -> adapter.submitList(forecastRootModel as List<ForecastModel>) })
-        mainFragmentViewModel?.getErrMsgLiveData()
+            Observer<Any?> { forecastRootModel -> adapter.submitList(forecastRootModel as List<ForecastRootModel>) })
+        mainFragmentViewModel?.errMsgLiveData
             ?.observe(viewLifecycleOwner, object : Observer<String?> {
                 override fun onChanged(msg: String?) {
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
@@ -114,14 +115,14 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun setData(currentWeatherRootModel: CurrentWeatherRootModel) {
         binding?.addressTV.setText(
-            currentWeatherRootModel.getName() + ", " + currentWeatherRootModel.getSys().getCountry()
+            currentWeatherRootModel.getName() + ", " + currentWeatherRootModel.getSys()?.getCountry()
         )
         binding?.currentDateTV.setText(
             WeatherHelperClass
                 .getDateTimeFormatter(currentWeatherRootModel.getDt(), "EEE, dd MMM  yyyy")
         )
         binding?.currentTempTV.setText(
-            java.lang.String.format("%.0f", currentWeatherRootModel.getMain().getTemp())
+            java.lang.String.format("%.0f", currentWeatherRootModel.getMain()?.getTemp())
         )
         binding?.currentTempUnitTV.setText(String.format("%s", tempUnit))
         binding?.currentWeatherDescriptionTV.setText(
@@ -130,31 +131,31 @@ class MainFragment : Fragment() {
             )
         )
         val iconUrl: String = Constants.ICON_URL_PREFIX +
-                currentWeatherRootModel.getWeather()?.get(0).getIcon() +
+                currentWeatherRootModel.getWeather()?.get(0)?.getIcon() +
                 Constants.ICON_URL_SUFFIX_4X
-        Picasso.get().load(iconUrl).into(binding.currentIconIV)
+        Picasso.get().load(iconUrl).into(binding?.currentIconIV)
         binding?.currentFeelsLikeTempTV.setText(
             java.lang.String.format(
                 "%.0f%s",
-                currentWeatherRootModel.getMain().getFeelsLike(),
+                currentWeatherRootModel.getMain()?.getFeelsLike(),
                 tempUnit
             )
         )
         binding?.currentMaxMinTempTV?.setText(
             java.lang.String.format(
-                "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.getMain().getTempMax(),
-                currentWeatherRootModel.getMain().getTempMin(), tempUnit
+                "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.getMain()?.getTempMax(),
+                currentWeatherRootModel.getMain()?.getTempMin(), tempUnit
             )
         )
-        binding?.currentHumidityTV.setText(currentWeatherRootModel.getMain().getHumidity() + "%")
+        binding?.currentHumidityTV.setText(currentWeatherRootModel.getMain()?.getHumidity() + "%")
         binding?.currentWindTV.setText(
-            currentWeatherRootModel.getWind().getSpeed() + " " + windSpeed
+            currentWeatherRootModel.getWind()?.getSpeed() + " " + windSpeed
         )
-        binding?.currentPressureTV.setText(currentWeatherRootModel.getMain().getPressure() + " hPa")
+        binding?.currentPressureTV.setText(currentWeatherRootModel.getMain()?.getPressure() + " hPa")
 
         // when rain class is not found or null
         if (currentWeatherRootModel.getRain() != null) binding?.currentRainTV.setText(
-            currentWeatherRootModel.getRain().get1h() + " mm"
+            currentWeatherRootModel.getRain().getH() + " mm"
         ) else binding?.currentRainTV?.setText("0 mm")
     }
 

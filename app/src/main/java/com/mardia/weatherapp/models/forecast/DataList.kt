@@ -1,38 +1,134 @@
 package com.mardia.weatherapp.models.forecast
 
 
-import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 data class DataList(
     @SerializedName("clouds")
     @Expose
-    val clouds: Clouds?,
+    var clouds: Clouds? = null,
+
     @SerializedName("dt")
     @Expose
-    val dt: Int?,
+    var dt: Int? = null,
+
     @SerializedName("dt_txt")
     @Expose
-    val dtTxt: String?,
+    var dtTxt: String? = null,
+
     @SerializedName("main")
     @Expose
-    val main: Main?,
+    var main: Main? = null,
+
     @SerializedName("pop")
     @Expose
-    val pop: Double?,
+    var pop: Double? = null,
+
     @SerializedName("rain")
     @Expose
-    val rain: Rain?,
+    var rain: Rain? = null,
+
     @SerializedName("sys")
     @Expose
-    val sys: Sys?,
+    var sys: Sys? = null,
+
     @SerializedName("visibility")
     @Expose
-    val visibility: Int?,
+    var visibility: Int? = null,
+
     @SerializedName("weather")
     @Expose
-    val weather: List<Weather?>?,
+    var weather: List<Weather?>? = null,
+
     @SerializedName("wind")
     @Expose
-    val wind: Wind?
-)
+    var wind: Wind? = null
+) {
+    // Getter methods
+    fun getClouds(): Clouds? {
+        return clouds
+    }
+
+    fun getDt(): Int? {
+        return dt
+    }
+
+    fun getDtTxt(): String? {
+        return dtTxt
+    }
+
+    fun getMain(): Main? {
+        return main
+    }
+
+    fun getPop(): Double? {
+        return pop
+    }
+
+    fun getRain(): Rain? {
+        return rain
+    }
+
+    fun getSys(): Sys? {
+        return sys
+    }
+
+    fun getVisibility(): Int? {
+        return visibility
+    }
+
+    fun getWeather(): List<Weather?>? {
+        return weather
+    }
+
+    fun getWind(): Wind? {
+        return wind
+    }
+
+    // Setter methods
+    fun setClouds(clouds: Clouds?) {
+        this.clouds = clouds
+    }
+
+    fun setDt(dt: Int?) {
+        this.dt = dt
+    }
+
+    fun setDtTxt(dtTxt: String?) {
+        this.dtTxt = dtTxt
+    }
+
+    fun setMain(main: Main?) {
+        this.main = main
+    }
+
+    fun setPop(pop: Double?) {
+        this.pop = pop
+    }
+
+    fun setRain(rain: Rain?) {
+        this.rain = rain
+    }
+
+    fun setSys(sys: Sys?) {
+        this.sys = sys
+    }
+
+    fun setVisibility(visibility: Int?) {
+        this.visibility = visibility
+    }
+
+    fun setWeather(weather: List<Weather?>?) {
+        this.weather = weather
+    }
+
+    fun setWind(wind: Wind?) {
+        this.wind = wind
+    }
+
+    // toString method
+    override fun toString(): String {
+        return "DataList(clouds=$clouds, dt=$dt, dtTxt=$dtTxt, main=$main, pop=$pop, rain=$rain, sys=$sys, visibility=$visibility, weather=$weather, wind=$wind)"
+    }
+}

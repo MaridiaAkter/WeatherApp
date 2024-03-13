@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mardia.weatherapp.models.forecast.DataList
+import com.mardia.weatherapp.models.forecast.ForecastRootModel
 
 class ForecastAdapter : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
@@ -26,7 +27,7 @@ class ForecastAdapter : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>
         return items.size
     }
 
-    fun submitList(items: List<DataList>) {
+    fun submitList(items: List<ForecastRootModel>) {
         this.items = items
         notifyDataSetChanged()
     }
