@@ -11,14 +11,17 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mardia.weatherapp.adapter.ForecastAdapter
+import com.mardia.weatherapp.databinding.FragmentMainBinding
 import com.mardia.weatherapp.models.currentweather.CurrentWeatherRootModel
 import com.mardia.weatherapp.utils.Constants
 import com.mardia.weatherapp.utils.DeviceLocation
@@ -46,20 +49,27 @@ class MainFragment : Fragment() {
 
     @Inject
     var weatherSharedPref: WeatherSharedPref? = null
+
+    @Inject
+    var currentWeatherRootModel: CurrentWeatherRootModel? =null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Assign variable
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
-        view = binding.getRoot()
+        view = binding?.root
+        if (view == null) {
+            return null
+        }
         mainFragmentViewModel = ViewModelProvider(this).get(MainFragmentViewModel::class.java)
 
         // menu setting only in this fragment
         setHasOptionsMenu(true)
 
         // initialize values
-        mainFragmentViewModel.loadData()
+        mainFragmentViewModel!!.loadData()
         weatherSharedPref?.let { setUnits(it.getTempUnit()) }
         weatherSharedPref?.let { setConstTemp(it.getTempUnit()) }
 
@@ -70,28 +80,28 @@ class MainFragment : Fragment() {
         val adapter = ForecastAdapter()
         val llm = LinearLayoutManager(activity)
         llm.orientation = RecyclerView.VERTICAL
-        binding.forecastRV.setLayoutManager(llm)
-        binding.forecastRV.setAdapter(adapter)
+        binding?.forecastRV?.layoutManager = llm
+        binding?.forecastRV?.adapter = adapter
 
         // load previously checked or unchecked configuration on switch
-        binding.tempUnitSwitch.setChecked(weatherSharedPref?.getTempUnit())
+        binding?.tempUnitSwitch?.isChecked = weatherSharedPref?.getTempUnit() ?: false
 
         // set the changed tempUnit and load the data again
-        binding.tempUnitSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        binding?.tempUnitSwitch?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             weatherSharedPref?.setTempUnit(isChecked)
             setUnits(isChecked)
             setConstTemp(isChecked)
-            mainFragmentViewModel.loadData()
+            mainFragmentViewModel?.loadData()
         })
-        mainFragmentViewModel.getCurrentLiveData()?.observe(viewLifecycleOwner,
-            Observer<Any?> { currentWeatherRootModel -> setData(currentWeatherRootModel) })
+        mainFragmentViewModel?.getCurrentLiveData()?.observe(viewLifecycleOwner,
+            Observer<Any?> { currentWeatherRootModel -> setData(currentWeatherRootModel as CurrentWeatherRootModel) })
 
         // set forecast data into RecyclerView
-        mainFragmentViewModel.getForecastLiveData()?.observe(viewLifecycleOwner,
-            Observer<Any?> { forecastRootModel -> adapter.submitList(forecastRootModel.getList()) })
-        mainFragmentViewModel.getErrMsgLiveData()
-            .observe(viewLifecycleOwner, object : Observer<String?> {
-                override fun onChanged(msg: String) {
+        mainFragmentViewModel?.getForecastLiveData()?.observe(viewLifecycleOwner,
+            Observer<Any?> { forecastRootModel -> adapter.submitList(forecastRootModel as List<ForecastModel>) })
+        mainFragmentViewModel?.getErrMsgLiveData()
+            ?.observe(viewLifecycleOwner, object : Observer<String?> {
+                override fun onChanged(msg: String?) {
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                 }
             })
@@ -100,51 +110,52 @@ class MainFragment : Fragment() {
         return view
     }
 
+
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun setData(currentWeatherRootModel: CurrentWeatherRootModel) {
-        binding.addressTV.setText(
+        binding?.addressTV.setText(
             currentWeatherRootModel.getName() + ", " + currentWeatherRootModel.getSys().getCountry()
         )
-        binding.currentDateTV.setText(
+        binding?.currentDateTV.setText(
             WeatherHelperClass
                 .getDateTimeFormatter(currentWeatherRootModel.getDt(), "EEE, dd MMM  yyyy")
         )
-        binding.currentTempTV.setText(
+        binding?.currentTempTV.setText(
             java.lang.String.format("%.0f", currentWeatherRootModel.getMain().getTemp())
         )
-        binding.currentTempUnitTV.setText(String.format("%s", tempUnit))
-        binding.currentWeatherDescriptionTV.setText(
+        binding?.currentTempUnitTV.setText(String.format("%s", tempUnit))
+        binding?.currentWeatherDescriptionTV.setText(
             WeatherHelperClass.capitalizeWord(
-                currentWeatherRootModel.getWeather().get(0).getDescription()
+                currentWeatherRootModel.getWeather()?.get(0).getDescription()
             )
         )
         val iconUrl: String = Constants.ICON_URL_PREFIX +
-                currentWeatherRootModel.getWeather().get(0).getIcon() +
+                currentWeatherRootModel.getWeather()?.get(0).getIcon() +
                 Constants.ICON_URL_SUFFIX_4X
         Picasso.get().load(iconUrl).into(binding.currentIconIV)
-        binding.currentFeelsLikeTempTV.setText(
+        binding?.currentFeelsLikeTempTV.setText(
             java.lang.String.format(
                 "%.0f%s",
                 currentWeatherRootModel.getMain().getFeelsLike(),
                 tempUnit
             )
         )
-        binding.currentMaxMinTempTV.setText(
+        binding?.currentMaxMinTempTV?.setText(
             java.lang.String.format(
                 "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.getMain().getTempMax(),
                 currentWeatherRootModel.getMain().getTempMin(), tempUnit
             )
         )
-        binding.currentHumidityTV.setText(currentWeatherRootModel.getMain().getHumidity() + "%")
-        binding.currentWindTV.setText(
+        binding?.currentHumidityTV.setText(currentWeatherRootModel.getMain().getHumidity() + "%")
+        binding?.currentWindTV.setText(
             currentWeatherRootModel.getWind().getSpeed() + " " + windSpeed
         )
-        binding.currentPressureTV.setText(currentWeatherRootModel.getMain().getPressure() + " hPa")
+        binding?.currentPressureTV.setText(currentWeatherRootModel.getMain().getPressure() + " hPa")
 
         // when rain class is not found or null
-        if (currentWeatherRootModel.getRain() != null) binding.currentRainTV.setText(
+        if (currentWeatherRootModel.getRain() != null) binding?.currentRainTV.setText(
             currentWeatherRootModel.getRain().get1h() + " mm"
-        ) else binding.currentRainTV.setText("0 mm")
+        ) else binding?.currentRainTV?.setText("0 mm")
     }
 
     // set the units based on switch
@@ -167,7 +178,7 @@ class MainFragment : Fragment() {
     private fun doItLater() {
         // When location is on, in first time weather repositories lat and lon returning 0.0
         // So, there is the 2nd iteration of of loadData for update UI
-        if (deviceLocation.isEnabled()) {
+        if (deviceLocation?.isEnabled == true) {
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({ //Do something after 1000ms (1 second)
                 mainFragmentViewModel?.loadData()
@@ -206,7 +217,7 @@ class MainFragment : Fragment() {
             // when clicked on search menu
         } else if (item.itemId == R.id.my_location) {
             locationPermissions?.locationEnable()
-            if (deviceLocation.isEnabled()) {
+            if (deviceLocation?.isEnabled == true) {
                 mainFragmentViewModel?.setCity(null)
                 mainFragmentViewModel?.loadData()
             }
@@ -218,4 +229,8 @@ class MainFragment : Fragment() {
         private var tempUnit: String = Constants.MetricUnit.TEMPERATURE
         private var windSpeed: String = Constants.MetricUnit.WIND_SPEED
     }
+}
+
+private fun TextView?.setText(any: Any) {
+
 }
