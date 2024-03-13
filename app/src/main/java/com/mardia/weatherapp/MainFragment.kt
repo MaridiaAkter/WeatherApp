@@ -125,10 +125,12 @@ class MainFragment : Fragment() {
             java.lang.String.format("%.0f", currentWeatherRootModel.getMain()?.getTemp())
         )
         binding?.currentTempUnitTV.setText(String.format("%s", tempUnit))
-        binding?.currentWeatherDescriptionTV.setText(
-            WeatherHelperClass.capitalizeWord(
-                currentWeatherRootModel.getWeather()?.get(0).getDescription()
-            )
+        binding?.currentWeatherDescriptionTV?.setText(
+            currentWeatherRootModel.getWeather()?.get(0)?.getDescription()?.let {
+                WeatherHelperClass.capitalizeWord(
+                    it
+                )
+            }
         )
         val iconUrl: String = Constants.ICON_URL_PREFIX +
                 currentWeatherRootModel.getWeather()?.get(0)?.getIcon() +
@@ -147,16 +149,14 @@ class MainFragment : Fragment() {
                 currentWeatherRootModel.getMain()?.getTempMin(), tempUnit
             )
         )
-        binding?.currentHumidityTV.setText(currentWeatherRootModel.getMain()?.getHumidity() + "%")
-        binding?.currentWindTV.setText(
-            currentWeatherRootModel.getWind()?.getSpeed() + " " + windSpeed
-        )
-        binding?.currentPressureTV.setText(currentWeatherRootModel.getMain()?.getPressure() + " hPa")
+        binding?.currentHumidityTV?.text = currentWeatherRootModel.getMain()?.getHumidity()?.toString() + "%"
+        binding?.currentWindTV?.text = (currentWeatherRootModel.getWind()?.getSpeed()?.toString() ?: "") + " " + windSpeed
+        binding?.currentPressureTV?.text = (currentWeatherRootModel.getMain()?.getPressure()?.toString() ?: "") + " hPa"
+
 
         // when rain class is not found or null
-        if (currentWeatherRootModel.getRain() != null) binding?.currentRainTV.setText(
-            currentWeatherRootModel.getRain().getH() + " mm"
-        ) else binding?.currentRainTV?.setText("0 mm")
+        binding?.currentRainTV?.text = (currentWeatherRootModel.getRain()?.getH()?.toString() ?: "0") + " mm"
+
     }
 
     // set the units based on switch
