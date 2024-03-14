@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -114,17 +113,10 @@ class MainFragment : Fragment() {
 
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun setData(currentWeatherRootModel: CurrentWeatherRootModel) {
-        binding?.addressTV.setText(
-            currentWeatherRootModel.getName() + ", " + currentWeatherRootModel.getSys()?.getCountry()
-        )
-        binding?.currentDateTV.setText(
-            WeatherHelperClass
-                .getDateTimeFormatter(currentWeatherRootModel.getDt(), "EEE, dd MMM  yyyy")
-        )
-        binding?.currentTempTV.setText(
-            java.lang.String.format("%.0f", currentWeatherRootModel.getMain()?.getTemp())
-        )
-        binding?.currentTempUnitTV.setText(String.format("%s", tempUnit))
+        setText()
+        setText()
+        setText()
+        setText()
         binding?.currentWeatherDescriptionTV?.setText(
             currentWeatherRootModel.getWeather()?.get(0)?.getDescription()?.let {
                 WeatherHelperClass.capitalizeWord(
@@ -136,13 +128,7 @@ class MainFragment : Fragment() {
                 currentWeatherRootModel.getWeather()?.get(0)?.getIcon() +
                 Constants.ICON_URL_SUFFIX_4X
         Picasso.get().load(iconUrl).into(binding?.currentIconIV)
-        binding?.currentFeelsLikeTempTV.setText(
-            java.lang.String.format(
-                "%.0f%s",
-                currentWeatherRootModel.getMain()?.getFeelsLike(),
-                tempUnit
-            )
-        )
+        setText()
         binding?.currentMaxMinTempTV?.setText(
             java.lang.String.format(
                 "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.getMain()?.getTempMax(),
@@ -194,8 +180,10 @@ class MainFragment : Fragment() {
         inflater.inflate(R.menu.search_menu, menu)
         val searchViewItem = menu.findItem(R.id.search_city)
         val searchView = searchViewItem.actionView as SearchView?
-        searchView!!.queryHint = "Find your city"
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        if (searchView != null) {
+            searchView.queryHint = "Find your city"
+        }
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchView.clearFocus()
 
@@ -232,6 +220,6 @@ class MainFragment : Fragment() {
     }
 }
 
-private fun TextView?.setText(any: Any) {
+private fun setText() {
 
 }

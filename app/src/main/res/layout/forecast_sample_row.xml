@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="forecastList"
+            type="com.mardia.weatherapp.models.forecast.List" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="2dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/rowDateTimeTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:setDateTime="@{forecastList.dt}"
+                tools:text="Mon 3pm" />
+
+            <ImageView
+                android:id="@+id/rowIconIV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                app:setIcon="@{forecastList.weather.get(0).icon}"
+                tools:src="@drawable/weather_10d_2x" />
+
+            <TextView
+                android:id="@+id/rowWeatherMainTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:text="@{forecastList.weather.get(0).main}"
+                tools:text="Thunderstorm" />
+
+            <TextView
+                android:id="@+id/rowMaxMinTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                tools:text="20\u00B0/17\u00B0 C"
+                app:tempMax="@{forecastList.main.tempMax}"
+                app:tempMin="@{forecastList.main.tempMin}" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
