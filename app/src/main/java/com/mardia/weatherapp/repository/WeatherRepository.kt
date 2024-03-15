@@ -39,18 +39,6 @@ class WeatherRepository @Inject constructor(@ApplicationContext private val cont
         this.city = city
     }
 
-    fun getRepoCurrentLiveData(): MutableLiveData<CurrentWeatherRootModel> {
-        return repoCurrentLiveData
-    }
-
-    fun getRepoForecastLiveData(): MutableLiveData<ForecastRootModel> {
-        return repoForecastLiveData
-    }
-
-    fun getRepoErrMsgLiveData(): MutableLiveData<String> {
-        return repoErrMsgLiveData
-    }
-
     fun getUnit(): String {
         val switchStatus = weatherSharedPref.getTempUnit()
         return if (switchStatus) Constants.TempUnit.FAHRENHEIT else Constants.TempUnit.CELSIUS

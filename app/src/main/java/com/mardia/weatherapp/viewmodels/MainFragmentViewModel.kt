@@ -39,8 +39,8 @@ class MainFragmentViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun setAllLiveData() {
-        currentLiveData = weatherRepository?.getRepoCurrentLiveData()
-        forecastLiveData = weatherRepository?.getRepoForecastLiveData()
-        errMsgLiveData = weatherRepository?.getRepoErrMsgLiveData()
+        currentLiveData = weatherRepository?.repoCurrentLiveData
+        forecastLiveData = weatherRepository?.repoForecastLiveData
+        errMsgLiveData = weatherRepository?.repoErrMsgLiveData
     }
 }

@@ -113,27 +113,18 @@ class MainFragment : Fragment() {
 
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun setData(currentWeatherRootModel: CurrentWeatherRootModel) {
-        setText()
-        setText()
-        setText()
-        setText()
-        binding?.currentWeatherDescriptionTV?.setText(
-            currentWeatherRootModel.weather?.get(0)?.description?.let {
-                WeatherHelperClass.capitalizeWord(
-                    it
-                )
-            }
-        )
+        binding?.currentWeatherDescriptionTV?.text = currentWeatherRootModel.weather?.get(0)?.description?.let {
+            WeatherHelperClass.capitalizeWord(
+                it
+            )
+        }
         val iconUrl: String = Constants.ICON_URL_PREFIX +
                 currentWeatherRootModel.weather?.get(0)?.icon +
                 Constants.ICON_URL_SUFFIX_4X
         Picasso.get().load(iconUrl).into(binding?.currentIconIV)
-        setText()
-        binding?.currentMaxMinTempTV?.setText(
-            java.lang.String.format(
-                "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.main?.tempMax,
-                currentWeatherRootModel.main?.tempMin, tempUnit
-            )
+        binding?.currentMaxMinTempTV?.text = java.lang.String.format(
+            "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.main?.tempMax,
+            currentWeatherRootModel.main?.tempMin, tempUnit
         )
         binding?.currentHumidityTV?.text = currentWeatherRootModel.main?.humidity?.toString() + "%"
         binding?.currentWindTV?.text = (currentWeatherRootModel.wind?.speed?.toString() ?: "") + " " + windSpeed
