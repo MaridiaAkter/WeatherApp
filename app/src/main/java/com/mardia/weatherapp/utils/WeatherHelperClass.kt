@@ -5,7 +5,7 @@ import java.util.Date
 
 object WeatherHelperClass {
 
-    fun getDateTimeFormatter(date: Int?, format: String): String {
+    fun getDateTimeFormatter(date: Int, format: String): String {
         return SimpleDateFormat(format)
             .format(Date(date * 1000L))
     }

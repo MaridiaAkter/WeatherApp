@@ -20,43 +20,4 @@ data class Weather(
     @SerializedName("main")
     @Expose
     var main: String? = null
-) {
-    // Getter methods
-    fun getDescription(): String? {
-        return description
-    }
-
-    fun getIcon(): String? {
-        return icon
-    }
-
-    fun getId(): Int? {
-        return id
-    }
-
-    fun getMain(): String? {
-        return main
-    }
-
-    // Setter methods
-    fun setDescription(description: String?) {
-        this.description = description
-    }
-
-    fun setIcon(icon: String?) {
-        this.icon = icon
-    }
-
-    fun setId(id: Int?) {
-        this.id = id
-    }
-
-    fun setMain(main: String?) {
-        this.main = main
-    }
-
-    // toString method
-    override fun toString(): String {
-        return "Weather(description=$description, icon=$icon, id=$id, main=$main)"
-    }
-}
+)

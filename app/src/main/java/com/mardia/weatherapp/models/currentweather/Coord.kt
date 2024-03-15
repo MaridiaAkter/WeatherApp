@@ -12,27 +12,4 @@ data class Coord(
     @SerializedName("lon")
     @Expose
     var lon: Double? = null
-) {
-    // Getter methods
-    fun getLat(): Double? {
-        return lat
-    }
-
-    fun getLon(): Double? {
-        return lon
-    }
-
-    // Setter methods
-    fun setLat(lat: Double?) {
-        this.lat = lat
-    }
-
-    fun setLon(lon: Double?) {
-        this.lon = lon
-    }
-
-    // toString method
-    override fun toString(): String {
-        return "Coord(lat=$lat, lon=$lon)"
-    }
-}
+)

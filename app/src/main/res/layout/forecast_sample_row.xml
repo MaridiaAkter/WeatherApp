@@ -6,7 +6,7 @@
     <data>
         <variable
             name="forecastList"
-            type="com.mardia.weatherapp.models.forecast.List" />
+            type="com.mardia.weatherapp.models.forecast.DataList" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

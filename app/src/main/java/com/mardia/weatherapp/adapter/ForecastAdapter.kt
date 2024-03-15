@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mardia.weatherapp.databinding.ForecastSampleRowBinding
+import com.mardia.weatherapp.models.forecast.DataList
 
 class ForecastAdapter : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
-    var items: ArrayList<List<Any>> = ArrayList() // Change List to a more specific type, like List<Any>
+    private var items: List<DataList> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
         val forecastBinding = ForecastSampleRowBinding.inflate(
@@ -18,7 +19,7 @@ class ForecastAdapter : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>
     }
 
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
-        val item: List<Any> = items[position] // Change List to a more specific type, like List<Any>
+        val item: DataList = items[position]
         holder.bind(item)
     }
 
@@ -26,16 +27,13 @@ class ForecastAdapter : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>
         return items.size
     }
 
-    fun submitList(items: List<List<Any>?>) { // Change List to a more specific type, like List<Any>
-        this.items.clear()
-        items.forEach {
-            it?.let { listItem -> this.items.add(listItem) }
-        }
+    fun submitList(items: List<DataList>) {
+        this.items = items
         notifyDataSetChanged()
     }
 
     class ForecastViewHolder(private val forecastBinding: ForecastSampleRowBinding) : RecyclerView.ViewHolder(forecastBinding.root) {
-        fun bind(item: List<Any>) { // Change List to a more specific type, like List<Any>
+        fun bind(item: DataList) {
             forecastBinding.forecastList = item
         }
     }

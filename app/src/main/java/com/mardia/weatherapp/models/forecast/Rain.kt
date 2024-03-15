@@ -8,19 +8,4 @@ data class Rain(
     @SerializedName("3h")
     @Expose
     var h: Double? = null
-) {
-    // Getter method for 'h' property
-    fun getH(): Double? {
-        return h
-    }
-
-    // Setter method for 'h' property
-    fun setH(h: Double?) {
-        this.h = h
-    }
-
-    // toString method
-    override fun toString(): String {
-        return "Rain(h=$h)"
-    }
-}
+)

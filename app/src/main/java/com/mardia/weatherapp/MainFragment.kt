@@ -97,8 +97,8 @@ class MainFragment : Fragment() {
             Observer<Any?> { currentWeatherRootModel -> setData(currentWeatherRootModel as CurrentWeatherRootModel) })
 
         // set forecast data into RecyclerView
-        mainFragmentViewModel?.getForecastLiveData()?.observe(viewLifecycleOwner,
-            Observer<Any?> { forecastRootModel -> adapter.submitList(forecastRootModel as List<ForecastRootModel>) })
+        mainFragmentViewModel?.getForecastLiveData()?.observe(viewLifecycleOwner)
+        { forecastRootModel -> forecastRootModel?.list?.let { adapter.submitList(it) } }
         mainFragmentViewModel?.errMsgLiveData
             ?.observe(viewLifecycleOwner, object : Observer<String?> {
                 override fun onChanged(msg: String?) {
@@ -118,30 +118,30 @@ class MainFragment : Fragment() {
         setText()
         setText()
         binding?.currentWeatherDescriptionTV?.setText(
-            currentWeatherRootModel.getWeather()?.get(0)?.getDescription()?.let {
+            currentWeatherRootModel.weather?.get(0)?.description?.let {
                 WeatherHelperClass.capitalizeWord(
                     it
                 )
             }
         )
         val iconUrl: String = Constants.ICON_URL_PREFIX +
-                currentWeatherRootModel.getWeather()?.get(0)?.getIcon() +
+                currentWeatherRootModel.weather?.get(0)?.icon +
                 Constants.ICON_URL_SUFFIX_4X
         Picasso.get().load(iconUrl).into(binding?.currentIconIV)
         setText()
         binding?.currentMaxMinTempTV?.setText(
             java.lang.String.format(
-                "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.getMain()?.getTempMax(),
-                currentWeatherRootModel.getMain()?.getTempMin(), tempUnit
+                "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.main?.tempMax,
+                currentWeatherRootModel.main?.tempMin, tempUnit
             )
         )
-        binding?.currentHumidityTV?.text = currentWeatherRootModel.getMain()?.getHumidity()?.toString() + "%"
-        binding?.currentWindTV?.text = (currentWeatherRootModel.getWind()?.getSpeed()?.toString() ?: "") + " " + windSpeed
-        binding?.currentPressureTV?.text = (currentWeatherRootModel.getMain()?.getPressure()?.toString() ?: "") + " hPa"
+        binding?.currentHumidityTV?.text = currentWeatherRootModel.main?.humidity?.toString() + "%"
+        binding?.currentWindTV?.text = (currentWeatherRootModel.wind?.speed?.toString() ?: "") + " " + windSpeed
+        binding?.currentPressureTV?.text = (currentWeatherRootModel.main?.pressure?.toString() ?: "") + " hPa"
 
 
         // when rain class is not found or null
-        binding?.currentRainTV?.text = (currentWeatherRootModel.getRain()?.getH()?.toString() ?: "0") + " mm"
+        binding?.currentRainTV?.text = (currentWeatherRootModel.rain?.h?.toString() ?: "0") + " mm"
 
     }
 
