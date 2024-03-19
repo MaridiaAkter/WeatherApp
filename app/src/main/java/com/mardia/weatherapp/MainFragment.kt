@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mardia.weatherapp.adapter.ForecastAdapter
 import com.mardia.weatherapp.databinding.FragmentMainBinding
 import com.mardia.weatherapp.models.currentweather.CurrentWeatherRootModel
+import com.mardia.weatherapp.models.forecast.DataList
 import com.mardia.weatherapp.models.forecast.ForecastRootModel
 import com.mardia.weatherapp.utils.Constants
 import com.mardia.weatherapp.utils.DeviceLocation
@@ -97,8 +98,8 @@ class MainFragment : Fragment() {
             Observer<Any?> { currentWeatherRootModel -> setData(currentWeatherRootModel as CurrentWeatherRootModel) })
 
         // set forecast data into RecyclerView
-        mainFragmentViewModel?.getForecastLiveData()?.observe(viewLifecycleOwner)
-        { forecastRootModel -> forecastRootModel?.list?.let { adapter.submitList(it) } }
+        mainFragmentViewModel?.getForecastLiveData()?.observe(viewLifecycleOwner,
+            Observer<Any?> { forecastRootModel -> adapter.submitList(forecastRootModel as List<DataList>) })
         mainFragmentViewModel?.errMsgLiveData
             ?.observe(viewLifecycleOwner, object : Observer<String?> {
                 override fun onChanged(msg: String?) {
@@ -113,18 +114,23 @@ class MainFragment : Fragment() {
 
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun setData(currentWeatherRootModel: CurrentWeatherRootModel) {
-        binding?.currentWeatherDescriptionTV?.text = currentWeatherRootModel.weather?.get(0)?.description?.let {
-            WeatherHelperClass.capitalizeWord(
-                it
-            )
-        }
+        binding?.currentWeatherDescriptionTV?.setText(
+            currentWeatherRootModel.weather?.get(0)?.description?.let {
+                WeatherHelperClass.capitalizeWord(
+                    it
+                )
+            }
+        )
         val iconUrl: String = Constants.ICON_URL_PREFIX +
                 currentWeatherRootModel.weather?.get(0)?.icon +
                 Constants.ICON_URL_SUFFIX_4X
         Picasso.get().load(iconUrl).into(binding?.currentIconIV)
-        binding?.currentMaxMinTempTV?.text = java.lang.String.format(
-            "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.main?.tempMax,
-            currentWeatherRootModel.main?.tempMin, tempUnit
+        setText()
+        binding?.currentMaxMinTempTV?.setText(
+            java.lang.String.format(
+                "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.main?.tempMax,
+                currentWeatherRootModel.main?.tempMin, tempUnit
+            )
         )
         binding?.currentHumidityTV?.text = currentWeatherRootModel.main?.humidity?.toString() + "%"
         binding?.currentWindTV?.text = (currentWeatherRootModel.wind?.speed?.toString() ?: "") + " " + windSpeed
@@ -214,3 +220,4 @@ class MainFragment : Fragment() {
 private fun setText() {
 
 }
+

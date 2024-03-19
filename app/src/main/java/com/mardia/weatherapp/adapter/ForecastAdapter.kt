@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mardia.weatherapp.databinding.ForecastSampleRowBinding
 import com.mardia.weatherapp.models.forecast.DataList
+import com.mardia.weatherapp.models.forecast.ForecastRootModel
 
 class ForecastAdapter : RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
 
