@@ -19,23 +19,15 @@ class CurrentLocation @Inject constructor(@ApplicationContext private val contex
         @Inject set
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
-    private var lat = 0.0
+    private var lat: Double = 0.0
     private var lon: Double = 0.0
 
     fun getLat(): Double {
         return lat
     }
 
-    private fun setLat(lat: Double) {
-        this.lat = lat
-    }
-
     fun getLon(): Double {
         return lon
-    }
-
-    private fun setLon(lon: Double) {
-        this.lon = lon
     }
 
     fun getLocation() {
@@ -66,8 +58,8 @@ class CurrentLocation @Inject constructor(@ApplicationContext private val contex
             .addOnSuccessListener { location: Location? ->
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
-                    setLat(location.latitude)
-                    setLon(location.longitude)
+                    lat = location.latitude
+                    lon = location.longitude
                     // save in shared pref
                     weatherSharedPref?.setLastLat(location.latitude)
                     weatherSharedPref?.setLastLon(location.longitude)
