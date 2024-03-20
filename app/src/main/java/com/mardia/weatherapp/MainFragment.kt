@@ -95,8 +95,8 @@ class MainFragment : Fragment() {
             Observer<Any?> { currentWeatherRootModel -> setData(currentWeatherRootModel as CurrentWeatherRootModel) })
 
         // set forecast data into RecyclerView
-        mainFragmentViewModel?.getForecastLiveData()?.observe(viewLifecycleOwner,
-            Observer<Any?> { forecastRootModel -> adapter.submitList(forecastRootModel as List<DataList>) })
+        mainFragmentViewModel?.getForecastLiveData()?.observe(viewLifecycleOwner)
+        { forecastRootModel -> forecastRootModel?.list?.let { adapter.submitList(it) } }
         mainFragmentViewModel?.errMsgLiveData
             ?.observe(viewLifecycleOwner, object : Observer<String?> {
                 override fun onChanged(msg: String?) {
@@ -110,6 +110,10 @@ class MainFragment : Fragment() {
 
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun setData(currentWeatherRootModel: CurrentWeatherRootModel) {
+        binding?.addressTV?.text = currentWeatherRootModel.name + ", " + currentWeatherRootModel.sys?.country
+        binding?.currentDateTV?.text = currentWeatherRootModel.dt?.let { WeatherHelperClass.getDateTimeFormatter(it, "EEE, dd MMM  yyyy") }
+        binding?.currentTempTV?.text = String.format("%.0f", currentWeatherRootModel.main?.temp)
+        binding?.currentTempUnitTV?.text = String.format("%s", tempUnit)
         binding?.currentWeatherDescriptionTV?.setText(
             currentWeatherRootModel.weather?.get(0)?.description?.let {
                 WeatherHelperClass.capitalizeWord(
