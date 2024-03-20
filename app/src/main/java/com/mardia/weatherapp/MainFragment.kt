@@ -114,17 +114,18 @@ class MainFragment : Fragment() {
         binding?.currentDateTV?.text = currentWeatherRootModel.dt?.let { WeatherHelperClass.getDateTimeFormatter(it, "EEE, dd MMM  yyyy") }
         binding?.currentTempTV?.text = String.format("%.0f", currentWeatherRootModel.main?.temp)
         binding?.currentTempUnitTV?.text = String.format("%s", tempUnit)
-        binding?.currentWeatherDescriptionTV?.setText(
-            currentWeatherRootModel.weather?.get(0)?.description?.let {
-                WeatherHelperClass.capitalizeWord(
-                    it
-                )
-            }
-        )
+        binding?.currentWeatherDescriptionTV?.text = currentWeatherRootModel.weather?.get(0)?.description?.let {
+            WeatherHelperClass.capitalizeWord(
+                it
+            )
+        }
         val iconUrl: String = Constants.ICON_URL_PREFIX +
                 currentWeatherRootModel.weather?.get(0)?.icon +
                 Constants.ICON_URL_SUFFIX_4X
         Picasso.get().load(iconUrl).into(binding?.currentIconIV)
+
+        binding?.currentFeelsLikeTempTV?.text = String.format("%.0f%s", currentWeatherRootModel.main?.feelsLike, tempUnit)
+
         binding?.currentMaxMinTempTV?.setText(
             java.lang.String.format(
                 "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.main?.tempMax,
