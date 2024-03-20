@@ -43,7 +43,7 @@ class LocationPermissions @Inject constructor(var activity: Activity) {
         }
 
     fun locationEnable() {
-        if (!deviceLocation!!.isEnabled) {
+        if (deviceLocation?.isEnabled != true) {
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             activity.startActivity(intent)
         }

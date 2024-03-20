@@ -67,7 +67,7 @@ class MainFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // initialize values
-        mainFragmentViewModel!!.loadData()
+        mainFragmentViewModel?.loadData()
         weatherSharedPref?.let { setUnits(it.getTempUnit()) }
         weatherSharedPref?.let { setConstTemp(it.getTempUnit()) }
 

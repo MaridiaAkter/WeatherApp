@@ -19,7 +19,7 @@ import javax.inject.Inject
 class WeatherRepository @Inject constructor(@ApplicationContext private val context: Context) {
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
-    private val TAG: String = WeatherRepository::class.simpleName!!
+    private val TAG: String? = WeatherRepository::class.simpleName
 
     private var city: String? = null
     val repoCurrentLiveData: MutableLiveData<CurrentWeatherRootModel> = MutableLiveData()
@@ -73,8 +73,8 @@ class WeatherRepository @Inject constructor(@ApplicationContext private val cont
                     city, getUnit(), Constants.OPEN_WEATHER_API_KEY
                 )
             }
-            WeatherRetrofitInstance.getWeatherRetrofit().getCurrentWeather(endUrl)
-                .enqueue(object : Callback<CurrentWeatherRootModel> {
+            WeatherRetrofitInstance.getWeatherRetrofit()?.getCurrentWeather(endUrl)
+                ?.enqueue(object : Callback<CurrentWeatherRootModel> {
                     override fun onResponse(
                         call: Call<CurrentWeatherRootModel>,
                         response: Response<CurrentWeatherRootModel>
@@ -107,8 +107,8 @@ class WeatherRepository @Inject constructor(@ApplicationContext private val cont
                     city, getUnit(), Constants.OPEN_WEATHER_API_KEY
                 )
             }
-            WeatherRetrofitInstance.getWeatherRetrofit().getForecast(endUrl)
-                .enqueue(object : Callback<ForecastRootModel> {
+            WeatherRetrofitInstance.getWeatherRetrofit()?.getForecast(endUrl)
+                ?.enqueue(object : Callback<ForecastRootModel> {
                     override fun onResponse(
                         call: Call<ForecastRootModel>,
                         response: Response<ForecastRootModel>

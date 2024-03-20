@@ -51,18 +51,17 @@ class CurrentLocation @Inject constructor(@ApplicationContext private val contex
             return
         }
 
-        fusedLocationClient!!.getCurrentLocation(
+        fusedLocationClient?.getCurrentLocation(
             Priority.PRIORITY_BALANCED_POWER_ACCURACY,
             CancellationTokenSource().token
-        )
-            .addOnSuccessListener { location: Location? ->
+        )?.addOnSuccessListener { location: Location? ->
                 // Got last known location. In some rare situations this can be null.
-                if (location != null) {
-                    lat = location.latitude
-                    lon = location.longitude
+                location?.let {
+                    lat = it.latitude
+                    lon = it.longitude
                     // save in shared pref
-                    weatherSharedPref?.setLastLat(location.latitude)
-                    weatherSharedPref?.setLastLon(location.longitude)
+                    weatherSharedPref?.setLastLat(it.latitude)
+                    weatherSharedPref?.setLastLon(it.longitude)
 
                     //Toast.makeText(context, "Lat: " + lat + "\nLon: " + lon, Toast.LENGTH_SHORT).show();
                 }
