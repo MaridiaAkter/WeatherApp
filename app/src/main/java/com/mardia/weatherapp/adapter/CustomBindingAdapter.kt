@@ -21,23 +21,25 @@ class CustomBindingAdapter {
                 Constants.MetricUnit.TEMPERATURE
             return tempUnit
         }
-
-        @BindingAdapter(value = ["app:setDateTime"])
-        fun setDateTime(textView: TextView, dt: Int) {
-            val dateTime: String = WeatherHelperClass.getDateTimeFormatter(dt, "EEE hh:mm aaa")
-            textView.text = dateTime
-        }
-
-        @BindingAdapter(value = ["app:setIcon"])
-        fun setIcon(imageView: ImageView?, icon: String) {
-            val iconUrl: String = Constants.ICON_URL_PREFIX +
-                    icon + Constants.ICON_URL_SUFFIX
-            Picasso.get().load(iconUrl).into(imageView)
-        }
-
-        @BindingAdapter(value = ["app:tempMax", "app:tempMin"])
-        fun setMaxMinTemp(textView: TextView, max: Double, min: Double) {
-            textView.text = String.format("%.0f\u00B0 / %.0f%s", max, min, setTempUnit())
-        }
     }
+}
+
+@BindingAdapter(value = ["app:setDateTime"])
+fun setDateTime(textView: TextView, dt: Int) {
+    val dateTime: String = WeatherHelperClass.getDateTimeFormatter(dt, "EEE hh:mm aaa")
+    textView.text = dateTime
+}
+
+@BindingAdapter(value = ["app:setIcon"])
+fun setIcon(imageView: ImageView?, icon: String) {
+    val iconUrl: String = Constants.ICON_URL_PREFIX +
+            icon + Constants.ICON_URL_SUFFIX
+    Picasso.get().load(iconUrl).into(imageView)
+}
+
+@BindingAdapter(value = ["app:tempMax", "app:tempMin"])
+fun setMaxMinTemp(textView: TextView, max: Double, min: Double) {
+    textView.text = String.format("%.0f\u00B0 / %.0f%s", max, min,
+        CustomBindingAdapter.setTempUnit()
+    )
 }
