@@ -1,3 +1,5 @@
+Uses Technology: Kotlin, MVVM, Shared Preference, Dependy Injection by Hilt, Data Binding, Binding Adaptter, Viewmodel, RecyclerView, LiveData, Location, RESTful API, SearchView, Navigation Graph, Picasso, Retrofit, Repository Pattern.
+
 1. Current Location Weather in Celcius
 ![Screenshot_1710943776](https://github.com/MaridiaAkter/WeatherApp/assets/114928982/1feb7091-7e69-4cea-850e-e9de334f83b8)
 
