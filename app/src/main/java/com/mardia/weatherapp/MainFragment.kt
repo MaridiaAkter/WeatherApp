@@ -42,17 +42,14 @@ class MainFragment : Fragment() {
     private var view: View? = null
     private var mainFragmentViewModel: MainFragmentViewModel? = null
 
-    @Inject
     var locationPermissions: LocationPermissions? = null
+        @Inject set
 
-    @Inject
     var deviceLocation: DeviceLocation? = null
+        @Inject set
 
-    @Inject
     var weatherSharedPref: WeatherSharedPref? = null
-
-    @Inject
-    var currentWeatherRootModel: CurrentWeatherRootModel? =null
+        @Inject set
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -111,7 +108,6 @@ class MainFragment : Fragment() {
         return view
     }
 
-
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun setData(currentWeatherRootModel: CurrentWeatherRootModel) {
         binding?.currentWeatherDescriptionTV?.setText(
@@ -125,7 +121,6 @@ class MainFragment : Fragment() {
                 currentWeatherRootModel.weather?.get(0)?.icon +
                 Constants.ICON_URL_SUFFIX_4X
         Picasso.get().load(iconUrl).into(binding?.currentIconIV)
-        setText()
         binding?.currentMaxMinTempTV?.setText(
             java.lang.String.format(
                 "%.0f\u00B0 / %.0f%s", currentWeatherRootModel.main?.tempMax,
@@ -215,9 +210,5 @@ class MainFragment : Fragment() {
         private var tempUnit: String = Constants.MetricUnit.TEMPERATURE
         private var windSpeed: String = Constants.MetricUnit.WIND_SPEED
     }
-}
-
-private fun setText() {
-
 }
 

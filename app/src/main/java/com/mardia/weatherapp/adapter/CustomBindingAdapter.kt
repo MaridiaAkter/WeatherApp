@@ -10,8 +10,9 @@ import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 class CustomBindingAdapter {
-    @Inject
+
     var weatherSharedPref: WeatherSharedPref? = null
+        @Inject set
 
     companion object {
         var tempUnit: String = Constants.MetricUnit.TEMPERATURE

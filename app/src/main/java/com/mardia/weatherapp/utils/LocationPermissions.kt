@@ -10,8 +10,9 @@ import javax.inject.Inject
 
 
 class LocationPermissions @Inject constructor(var activity: Activity) {
-    @Inject
+
     var deviceLocation: DeviceLocation? = null
+        @Inject set
 
     init {
         locationPermission

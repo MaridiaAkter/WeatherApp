@@ -15,8 +15,9 @@ import javax.inject.Inject
 
 class CurrentLocation @Inject constructor(@ApplicationContext private val context: Context){
 
-    @Inject
     var weatherSharedPref: WeatherSharedPref? = null
+        @Inject set
+
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var lat = 0.0
     private var lon: Double = 0.0

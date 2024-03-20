@@ -11,8 +11,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainFragmentViewModel @Inject constructor() : ViewModel() {
-    @Inject
+
     var weatherRepository: WeatherRepository? = null
+        @Inject set
     private var currentLiveData: MutableLiveData<CurrentWeatherRootModel>? = null
     private var forecastLiveData: MutableLiveData<ForecastRootModel>? = null
     var errMsgLiveData: MutableLiveData<String>? = null
